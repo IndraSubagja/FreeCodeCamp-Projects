@@ -18,7 +18,6 @@ app.get("/", function (req, res) {
   res.sendFile(__dirname + '/views/index.html');
 });
 
-
 // your first API endpoint... 
 app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
@@ -27,13 +26,6 @@ app.get("/api/hello", function (req, res) {
 app.get("/api/timestamp/", (req, res) => {
   res.json({ unix: Date.now(), utc: new Date().toUTCString() });
 });
-
-app.get('/api/timestamp', (req, res) => {
-  res.json({
-    unix: Date.now(),
-    utc: Date()
-  })
-})
 
 app.get('/api/timestamp/:date_string', (req, res, next) => {
   req.date_string = /\d{5,}/.test(req.params.date_string) ? parseInt(req.params.date_string) : req.params.date_string
