@@ -78,11 +78,9 @@ app.get('/api/shorturl/:short_url?', async function (req, res) {
     const urlParams = await URL.findOne({
       short_url: req.params.short_url
     })
-    if (urlParams) {
-      return res.redirect(urlParams.original_url)
-    } else {
-      return res.status(404).json('No URL found')
-    }
+
+    urlParams ? res.redirect(urlParams.original_url) : res.status(404).json('No URL found')
+
   } catch (err) {
     console.log(err)
     res.status(500).json('Server error')
