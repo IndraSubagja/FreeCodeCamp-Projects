@@ -2,7 +2,6 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const bodyParser = require('body-parser')
-const nanoId = require('nanoid')
 const mongoose = require('mongoose')
 require('dotenv').config()
 
