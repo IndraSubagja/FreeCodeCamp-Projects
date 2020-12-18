@@ -67,7 +67,7 @@ app.get('/api/exercise/users', (req, res) => {
 
 app.post('/api/exercise/add', async function(req, res) {
   const { userId, description, duration, date } = req.body
-  const users = await User.findById(userId, (err, user) => {
+  await User.findById(userId, (err, user) => {
     if(err) return res.send(err.message)
     if(!user) return res.send("unknown userId")
 
@@ -91,12 +91,14 @@ app.post('/api/exercise/add', async function(req, res) {
 
 app.get('/api/exercise/log', (req, res) => {
   const {userId: id, from: dateFrom, to: dateTo, limit: limit} = req.query
-  const findOne = User.findById(id, (err, user) => {
+  User.findById(id, (err, user) => {
     if(err || !user) return res.send("unknown userId")
 
     const log = []
     const exercise = Tracker.find({userId: id}, (err, data) => {
-      if(dateFrom || dateTo) {
+      if (dateFrom && dateTo) {
+        data = data.filter(d => new Date(d.date ? d.date : Date.now()) <= new Date(dateTo) && new Date(d.date ? d.date : Date.now()) >= new Date(dateFrom))
+      } else if(dateFrom || dateTo) {
         data = data.filter(d => new Date(d.date ? d.date : Date.now()) <= new Date(dateTo) || new Date(d.date ? d.date : Date.now()) >= new Date(dateFrom))
       }
 
